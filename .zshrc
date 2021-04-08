@@ -52,6 +52,7 @@ alias gl="git l"
 # Docker aliases
 alias dstop='docker stop $(docker ps -a -q)'
 alias dstart='docker-compose up -d'
+alias dps='docker ps'
 
 # upstart setup
 source ~/setup/.upstartrc
