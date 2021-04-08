@@ -81,26 +81,3 @@ nnoremap <leader>fs :Files<CR>
 
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
-
-" Deprecated ctrlp
-" map <leader>fs :CtrlP<CR>
-" map <leader>ms :CtrlPTag<CR>
-" let g:ctrlp_working_path_mode = 'cr'
-" let g:ctrlp_match_window='min:4,max:100'
-" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-" let g:ctrlp_max_depth=1000
-
-" let g:ctrlp_prompt_mappings = {
-"  \ 'PrtSelectMove("j")': ['<c-n>', '<c-j>', '<down>'],
-"  \ 'PrtSelectMove("k")': ['<c-p>', '<c-k>', '<up>'],
-"  \ 'PrtHistory(-1)': ['<c-h>'],
-"  \ 'PrtHistory(1)': ['<c-l>'],
-"  \ 'PrtCurLeft()': ['<left>', '<c-^>'],
-"  \ 'PrtCurRight()': ['<right>'],
-"  \ }
-
-" if executable('ag')
-"   set grepprg=ag\  -nogroup\  -nocolor\  --column
-"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"   let g:ctrlp_use_caching = 0
-" end
