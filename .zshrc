@@ -1,6 +1,3 @@
-
-[[ -s "$HOME/.profile" ]] && source "$HOME/.profile" # Load the default .profile
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
@@ -13,8 +10,20 @@ alias vi='mvim -v'
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# The need for speed
-alias fopen='OUTPUT=$(fzf); vi ${OUTPUT}; history -s vi ${OUTPUT}'
+# ZSH History settings
+export HISTFILE=~/.zsh_history
+export HISTFILESIZE=4000
+export HISTSIZE=4000
+setopt INC_APPEND_HISTORY
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+
+# Find a file, append opening it to history, then open it
+alias fopen='OUTPUT=$(fzf); print -sr "vi $OUTPUT"; vi $OUTPUT'
+
+# Alias grep with rg
 alias grep='rg'
 
 alias smooshgit='smooshgit.sh'
