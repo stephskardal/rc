@@ -28,26 +28,15 @@ alias grep='rg'
 
 alias smooshgit='smooshgit.sh'
 
-# I don't really use these
-alias st='git status -s'
-alias ga='git add'
-alias gap='git add -p'
-alias gb='git blame -w -M -C'
-alias gd='git diff'
-alias gdm='git diff master'
-alias ci='git commit -m' # requires you to type a commit message
-alias amend='git commit --amend --no-edit'
+alias gst='git status'
 alias gf='git fetch'
 alias gp='git pull'
-alias gpu='git push'
 alias gpf='git push --force'
-alias br='git branch'
-alias gme='git branch --merged'
-alias gmed='git branch --merged | egrep -v "(^\*|master)" | xargs git branch -d'
-alias co='git checkout'
-alias staged='git diff --cached'
-alias master='git checkout master'
-alias gl="git l"
+alias grm='git rebase origin/master'
+alias gcm='git checkout master'
+alias gco='git checkout'
+alias gbr='git branch'
+alias gd='git diff'
 
 # Docker aliases
 alias dstop='docker stop $(docker ps -a -q)'
@@ -56,3 +45,14 @@ alias dps='docker ps'
 
 # upstart setup
 source ~/setup/.upstartrc
+
+# I don't really use these
+alias ga='git add'
+alias gap='git add -p'
+alias gb='git blame -w -M -C'
+alias gdm='git diff master'
+alias ci='git commit -m' # requires you to type a commit message
+alias amend='git commit --amend --no-edit'
+alias gpu='git push'
+alias staged='git diff --cached'
+alias gl="git l"
