@@ -1,0 +1,21 @@
+function fopen() {
+  # Find a file, append opening it to history, then open it
+  OUTPUT=$(fzf); print -sr "vi $OUTPUT"; vi $OUTPUT
+}
+
+function sopen() {
+  # create temp file as search result
+  TMPFILE=~/.search_results
+
+  # run grep command
+  rg $* --color=always > "$TMPFILE"
+
+  # show results file in less
+  # less -Mr "$TMPFILE"
+  less -Mr "$TMPFILE"
+
+  # delete the temp file
+  rm -f -- "$TMPFILE"
+
+  # And then, figure out a way to select the file and pipe it to vi
+}

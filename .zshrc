@@ -20,24 +20,30 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 
-# Find a file, append opening it to history, then open it
-alias fopen='OUTPUT=$(fzf); print -sr "vi $OUTPUT"; vi $OUTPUT'
+# bundle
+alias be='bundle exec'
 
 # Alias grep with rg
 alias grep='rg'
 alias ogrep='/usr/bin/grep'
 
-alias smooshgit='smooshgit.sh'
-
+# Git fun
 alias gst='git status'
 alias gf='git fetch'
 alias gp='git pull'
-alias gpf='git push --force'
+alias gpf='git push --force-with-lease'
 alias grem='git rebase origin/master'
 alias gcm='git checkout master'
 alias gco='git checkout'
-alias gbr='git branch'
+alias gb='git branch | tail'
 alias gd='git diff'
+alias ci='git commit -m' # requires you to type a commit message
+
+# File search and content search
+source ~/setup/.fopen_and_sopen
+
+# Create and open PR
+source ~/setup/.git_things
 
 # With rubocop
 function rubr() {
@@ -55,10 +61,12 @@ source ~/setup/.upstartrc
 # I don't really use these
 alias ga='git add'
 alias gap='git add -p'
-alias gb='git blame -w -M -C'
+alias gbl='git blame -w -M -C'
 alias gdm='git diff master'
-alias ci='git commit -m' # requires you to type a commit message
 alias amend='git commit --amend --no-edit'
 alias gpu='git push'
 alias staged='git diff --cached'
 alias gl="git l"
+
+# Doesn't work
+# alias gclean="!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"

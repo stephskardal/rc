@@ -1,0 +1,16 @@
+function openpr() {
+  # Uses Github CLI
+  gh pr view -w
+}
+
+function createpr() {
+  branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
+  open https://github.com/teamupstart/upstart_web/pull/new/$branch_name
+}
+
+# Alternatively, you can go with git add . && git commit --amend --no-edit
+# if you don't want to edit the commit message
+function smooshgit() {
+  git commit -m "WIP"
+  git rebase --interactive HEAD~2
+}
