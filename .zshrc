@@ -25,6 +25,7 @@ alias fopen='OUTPUT=$(fzf); print -sr "vi $OUTPUT"; vi $OUTPUT'
 
 # Alias grep with rg
 alias grep='rg'
+alias ogrep='/usr/bin/grep'
 
 alias smooshgit='smooshgit.sh'
 
@@ -32,11 +33,16 @@ alias gst='git status'
 alias gf='git fetch'
 alias gp='git pull'
 alias gpf='git push --force'
-alias grm='git rebase origin/master'
+alias grem='git rebase origin/master'
 alias gcm='git checkout master'
 alias gco='git checkout'
 alias gbr='git branch'
 alias gd='git diff'
+
+# With rubocop
+function rubr() {
+  git diff HEAD --name-only| tr '\n' '\0'|xargs -0 find  2>/dev/null|xargs rubocop
+}
 
 # Docker aliases
 alias dstop='docker stop $(docker ps -a -q)'
