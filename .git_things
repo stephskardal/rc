@@ -1,3 +1,15 @@
+# Git fun
+alias gst='git status'
+alias gf='git fetch'
+alias gp='git pull'
+alias gpf='git push --force-with-lease'
+alias grem='git rebase origin/master'
+alias gcm='git checkout master'
+alias gco='git checkout'
+alias gb='git branch | tail'
+alias gd='git diff'
+alias ci='git commit -m' # requires you to type a commit message
+
 function openpr() {
   # Uses Github CLI
   gh pr view -w
@@ -14,3 +26,13 @@ function smooshgit() {
   git commit -m "WIP"
   git rebase --interactive HEAD~2
 }
+
+# I don't really use these
+alias ga='git add'
+alias gap='git add -p'
+alias gbl='git blame -w -M -C'
+alias gdm='git diff master'
+alias amend='git commit --amend --no-edit'
+alias gpu='git push'
+alias staged='git diff --cached'
+alias gl="git l"
