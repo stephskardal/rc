@@ -1,3 +1,8 @@
+" Resources for Vim:
+" vimtutor
+" vim-adventures.com
+" vimgolf gem
+
 set nocompatible
 filetype off
 
