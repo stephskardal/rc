@@ -22,7 +22,7 @@ setopt SHARE_HISTORY
 
 # Alias grep with rg
 alias grep='rg'
-alias ogrep='/usr/bin/grep'
+alias ogrep='/usr/bin/grep -R'
 
 # File search and content search
 source ~/setup/.fopen_and_sopen
