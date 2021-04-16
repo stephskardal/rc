@@ -1,6 +1,12 @@
 function fopen() {
-  # Find a file, append opening it to history, then open it
-  OUTPUT=$(fzf); print -sr "vi $OUTPUT"; vi $OUTPUT
+  # Find a file
+  OUTPUT=$(fzf)
+
+  # Append opening it to history
+  print -sr "vi $OUTPUT"
+
+  # then open it
+  vi $OUTPUT
 }
 
 function sopen() {
