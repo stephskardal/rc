@@ -10,6 +10,18 @@ alias gb='git branch | tail'
 alias gd='git diff'
 alias ci='git commit -m' # requires you to type a commit message
 
+function gup() {
+  git fetch
+  git rebase origin/master
+  git push --force-with-lease
+}
+
+function guppush() {
+  git fetch
+  git rebase origin/master
+  git push --force-with-lease
+}
+
 function openpr() {
   # Uses Github CLI
   gh pr view -w

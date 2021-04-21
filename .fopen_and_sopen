@@ -2,11 +2,14 @@ function fopen() {
   # Find a file
   OUTPUT=$(fzf)
 
-  # Append opening it to history
-  print -sr "vi $OUTPUT"
+  if [[ $OUTPUT != '' ]]
+  then
+    # Append opening it to history
+    print -sr "vi $OUTPUT"
 
-  # then open it
-  vi $OUTPUT
+    # then open it
+    vi $OUTPUT
+  fi
 }
 
 function sopen() {
