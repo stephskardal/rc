@@ -6,7 +6,7 @@ alias gpf='git push --force-with-lease'
 alias grem='git rebase origin/master'
 alias gcm='git checkout master'
 alias gco='git checkout'
-alias gb='git branch | tail'
+alias gb='git branch | tail -n 100 | grep -v master'
 alias gd='git diff'
 alias ci='git commit -m' # requires you to type a commit message
 

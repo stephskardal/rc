@@ -86,3 +86,5 @@ nnoremap <leader>fs :Files<CR>
 
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
 nnoremap <silent> <leader>gf :YcmCompleter FixIt<CR>
+
+noremap! <C-?> <C-h>
