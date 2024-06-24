@@ -3,7 +3,7 @@ alias gst='git status'
 alias gf='git fetch'
 alias gp='git pull'
 alias gpf='git push --force-with-lease'
-alias grem='git rebase origin/master'
+alias grem='git fetch; [[ "$(basename "$PWD")" == "upstart_web" ]] && git rebase origin/master || git rebase origin/main'
 alias gcm='git checkout master'
 alias gco='git checkout'
 alias gb='git branch | tail -n 100 | grep -v master'
@@ -30,6 +30,21 @@ function openpr() {
 function createpr() {
   branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
   open https://github.com/teamupstart/upstart_web/pull/new/$branch_name
+}
+
+function creategdpr() {
+  branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
+  open https://github.com/teamupstart/greendot/pull/new/$branch_name
+}
+
+function createmspr() {
+  branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
+  open https://github.com/teamupstart/mobile/pull/new/$branch_name
+}
+
+function createuwfpr() {
+  branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
+  open https://github.com/teamupstart/upstart-web-frontend/pull/new/$branch_name
 }
 
 # Alternatively, you can go with git add . && git commit --amend --no-edit

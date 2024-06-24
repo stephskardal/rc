@@ -8,7 +8,7 @@ function fopen() {
     print -sr "vi $OUTPUT"
 
     # then open it
-    vi $OUTPUT
+    vim $OUTPUT
   fi
 }
 
