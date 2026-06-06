@@ -3,23 +3,34 @@ alias gst='git status'
 alias gf='git fetch'
 alias gp='git pull'
 alias gpf='git push --force-with-lease'
-alias grem='git fetch; [[ "$(basename "$PWD")" == "upstart_web" ]] && git rebase origin/master || git rebase origin/main'
 alias gcm='git checkout master'
 alias gco='git checkout'
-alias gb='git branch | tail -n 100 | grep -v master'
+alias gb='git branch | tail -n 100 | grep -v master | grep -v main'
 alias gd='git diff'
 alias ci='git commit -m' # requires you to type a commit message
 
-function gup() {
+function git_base_branch() {
+  if [[ "$(basename "$PWD")" == "upstart_web" ]]; then
+    echo master
+  else
+    echo main
+  fi
+}
+
+function grem() {
+  local base
+  base=$(git_base_branch)
   git fetch
-  git rebase origin/master
+  git rebase "origin/${base}"
+}
+
+function gup() {
+  grem
   git push --force-with-lease
 }
 
 function guppush() {
-  git fetch
-  git rebase origin/master
-  git push --force-with-lease
+  gup
 }
 
 function openpr() {
@@ -54,6 +65,14 @@ function smooshgit() {
   git rebase --interactive HEAD~2
 }
 
+function ship() {
+  smooshgit && gup
+}
+
+function shippr() {
+  ship && createpr
+}
+
 # I don't really use these
 alias ga='git add'
 alias gap='git add -p'
@@ -63,3 +82,23 @@ alias amend='git commit --amend --no-edit'
 alias gpu='git push'
 alias staged='git diff --cached'
 alias gl="git l"
+
+function gitcleanmerged() {
+  local branches
+  branches=$(git branch --merged | grep -v "^[* ]*master$" | grep -v "^[* ]*main$")
+  if [[ -n "$branches" ]]; then
+    echo "$branches" | xargs git branch -d
+  fi
+}
+
+function gitcleanforce() {
+  local branches
+  branches=$(git branch | grep -v "master" | grep -v "main")
+  if [[ -n "$branches" ]]; then
+    echo "$branches" | xargs git branch -D
+  fi
+}
+
+function gitclean() {
+  gitcleanmerged
+}
