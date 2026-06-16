@@ -38,8 +38,49 @@ function openpr() {
 }
 
 function createpr() {
-  branch_name=`git symbolic-ref HEAD | cut -d"/" -f 3,4`;
-  open https://github.com/teamupstart/upstart_web/pull/new/$branch_name
+  local branch_name remote_url repo_path
+
+  branch_name=$(git branch --show-current)
+  if [[ -z "$branch_name" ]]; then
+    echo "createpr: cannot create a PR from detached HEAD" >&2
+    return 1
+  fi
+
+  remote_url=$(git remote get-url --push origin 2>/dev/null || git remote get-url origin 2>/dev/null)
+  if [[ -z "$remote_url" ]]; then
+    echo "createpr: no origin remote found" >&2
+    return 1
+  fi
+
+  case "$remote_url" in
+    git@github.com:*.git)
+      repo_path=${remote_url#git@github.com:}
+      repo_path=${repo_path%.git}
+      ;;
+    git@github.com:*)
+      repo_path=${remote_url#git@github.com:}
+      ;;
+    https://github.com/*.git)
+      repo_path=${remote_url#https://github.com/}
+      repo_path=${repo_path%.git}
+      ;;
+    https://github.com/*)
+      repo_path=${remote_url#https://github.com/}
+      ;;
+    ssh://git@github.com/*.git)
+      repo_path=${remote_url#ssh://git@github.com/}
+      repo_path=${repo_path%.git}
+      ;;
+    ssh://git@github.com/*)
+      repo_path=${remote_url#ssh://git@github.com/}
+      ;;
+    *)
+      echo "createpr: unsupported GitHub origin remote: $remote_url" >&2
+      return 1
+      ;;
+  esac
+
+  open "https://github.com/${repo_path}/pull/new/${branch_name}"
 }
 
 function creategdpr() {
@@ -84,20 +125,53 @@ alias gl="git l"
 
 function gitcleanmerged() {
   local branches
-  branches=$(git branch --merged | grep -v "^[* ]*master$" | grep -v "^[* ]*main$")
+  branches=$(git for-each-ref --merged HEAD --format='%(refname:short)' refs/heads | while read -r branch; do
+    if [[ "$branch" != "main" && "$branch" != "master" ]]; then
+      echo "$branch"
+    fi
+  done)
   if [[ -n "$branches" ]]; then
-    echo "$branches" | xargs git branch -d
+    echo "$branches" | xargs git branch -d --
   fi
+}
+
+function git_non_base_branches() {
+  git for-each-ref --format='%(refname:short)' refs/heads | while read -r branch; do
+    if [[ "$branch" != "main" && "$branch" != "master" ]]; then
+      echo "$branch"
+    fi
+  done
+}
+
+function git_checkout_base_branch() {
+  local current_branch checkout_branch
+
+  current_branch=$(git branch --show-current)
+  if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    return 0
+  fi
+
+  if git show-ref --verify --quiet refs/heads/main; then
+    checkout_branch=main
+  elif git show-ref --verify --quiet refs/heads/master; then
+    checkout_branch=master
+  else
+    echo "gitclean: no local main or master branch to check out before deleting non-base branches" >&2
+    return 1
+  fi
+
+  git checkout "$checkout_branch" || return 1
 }
 
 function gitcleanforce() {
   local branches
-  branches=$(git branch | grep -v "master" | grep -v "main")
+  git_checkout_base_branch || return 1
+  branches=$(git_non_base_branches)
   if [[ -n "$branches" ]]; then
-    echo "$branches" | xargs git branch -D
+    echo "$branches" | xargs git branch -D --
   fi
 }
 
 function gitclean() {
-  gitcleanmerged
+  gitcleanforce
 }
