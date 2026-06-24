@@ -163,12 +163,40 @@ function git_checkout_base_branch() {
   git checkout "$checkout_branch" || return 1
 }
 
+function gitclean_purge_worktrees() {
+  local current_worktree worktrees line worktree_path branch
+
+  current_worktree=$(git rev-parse --show-toplevel) || return 1
+  git worktree prune || return 1
+  worktrees=$(git worktree list --porcelain) || return 1
+
+  while IFS= read -r line; do
+    case "$line" in
+      worktree\ *)
+        worktree_path=${line#worktree }
+        branch=""
+        ;;
+      branch\ refs/heads/*)
+        branch=${line#branch refs/heads/}
+        if [[ "$worktree_path" != "$current_worktree" && "$branch" != "main" && "$branch" != "master" ]]; then
+          git worktree remove --force "$worktree_path" || return 1
+        fi
+        ;;
+    esac
+  done <<< "$worktrees"
+
+  git worktree prune || return 1
+}
+
 function gitcleanforce() {
-  local branches
+  local branches branch
   git_checkout_base_branch || return 1
+  gitclean_purge_worktrees || return 1
   branches=$(git_non_base_branches)
   if [[ -n "$branches" ]]; then
-    echo "$branches" | xargs git branch -D --
+    while IFS= read -r branch; do
+      git branch -D -- "$branch" || return 1
+    done <<< "$branches"
   fi
 }
 
